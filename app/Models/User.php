@@ -47,18 +47,19 @@ class User extends Authenticatable
     }
 
     public function colocations(){
-        return $this->hasMany(Colocation::class);
+        return $this->belongsTo(Colocation::class);
     }
 
-    public function memberships() {
-        return $this->hasMany(Membership::class);
-    }
+    // app/Models/User.php
+public function memberships() {
+    return $this->hasMany(Membership::class);
+}
 
-    public function activeMembership() {
-        return $this->hasOne(Membership::class)->whereNull('left_at');
-    }
+public function activeMembership() {
+    return $this->hasOne(Membership::class)->whereNull('left_at');
+}
 
-    public function expenses() {
-        return $this->hasMany(Expense::class, 'paid_by');
-    }
+public function expenses() {
+    return $this->hasMany(Expense::class, 'paid_by');
+}
 }

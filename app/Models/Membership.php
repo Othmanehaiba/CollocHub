@@ -6,5 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class Membership extends Model
 {
-    //
+    public $timestamps = false;
+
+    protected $fillable = [
+        'user_id',
+        'colocation_id',
+        'role',
+        'joined_at',
+        'left_at',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'joined_at' => 'datetime',
+            'left_at' => 'datetime',
+        ];
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function colocation()
+    {
+        return $this->belongsTo(Colocation::class);
+    }
 }

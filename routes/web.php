@@ -14,8 +14,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/invitation/{token}', [InvitationsController::class, 'open'])->name('invitations.open');
+
 Route::middleware(['auth', 'check.banned'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/invitation/{token}/respond', [InvitationsController::class, 'respond'])->name('invitations.respond');
+    Route::post('/invitation/{token}/accept', [InvitationsController::class, 'accept'])->name('invitations.accept');
+    Route::post('/invitation/{token}/refuse', [InvitationsController::class, 'refuse'])->name('invitations.refuse');    
 
     Route::resource('colocations', ColocationsController::class);
     Route::post('colocations/{colocation}/cancel', [ColocationsController::class, 'cancel'])->name('colocations.cancel');

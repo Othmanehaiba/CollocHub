@@ -63,16 +63,14 @@ class InvitationsController extends Controller
     {
         $invitation = $this->getValidInvitation($token);
 
-        // If already logged in, go directly to accept/refuse page
+        
         if (auth()->check()) {
             return redirect()->route('invitations.respond', $invitation->token);
         }
 
-        // Check if account already exists with invited email
         $userExists = User::where('email', $invitation->email)->exists();
 
         if ($userExists) {
-            // Save token in session, so after login we can continue the invitation flow
             session(['invite_token' => $invitation->token]);
 
             return redirect()
@@ -80,11 +78,11 @@ class InvitationsController extends Controller
                 ->with('status', 'Connectez-vous pour répondre à votre invitation.');
         }
 
-        // No account yet -> keep your current register flow
+       
         return redirect()->route('register', ['invite' => $invitation->token]);
     }
 
-    // NEW: page where logged user can accept or refuse
+    
     public function respond(string $token): View|RedirectResponse
     {
         $invitation = $this->getValidInvitation($token);
@@ -112,7 +110,6 @@ class InvitationsController extends Controller
         return view('invitations.respond', compact('invitation'));
     }
 
-    // NEW: accept invitation
     public function accept(string $token): RedirectResponse
     {
         $invitation = $this->getValidInvitation($token);
@@ -145,7 +142,6 @@ class InvitationsController extends Controller
             ->with('success', 'Invitation acceptée. Bienvenue dans la colocation.');
     }
 
-    // NEW: refuse invitation
     public function refuse(string $token): RedirectResponse
     {
         $invitation = $this->getValidInvitation($token);

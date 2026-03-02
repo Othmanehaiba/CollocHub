@@ -91,16 +91,16 @@
 
                 <!-- Payé par -->
                 <div>
-                    <label for="paid_by" class="block text-sm font-medium leading-6 text-gray-900 mb-2">Payé par <span class="text-red-500">*</span></label>
-                    <select id="paid_by" name="paid_by" required
-                        class="block w-full rounded-md border-0 py-2 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 transition"
-                    >
-                        @foreach($members as $membership)
-                            <option value="{{ $membership->user->id }}" {{ (old('paid_by') == $membership->user->id || auth()->id() == $membership->user->id) ? 'selected' : '' }}>
-                                {{ $membership->user->name }} {{ auth()->id() == $membership->user->id ? '(Vous)' : '' }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <label class="block text-sm font-medium leading-6 text-gray-900 mb-2">
+                        Payé par
+                    </label>
+                
+                    <input type="hidden" name="paid_by" value="{{ auth()->id() }}">
+                
+                    <div class="block w-full rounded-md py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 bg-gray-100 sm:text-sm sm:leading-6">
+                        {{ auth()->user()->name }} (Vous)
+                    </div>
+                
                     @error('paid_by')
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                     @enderror

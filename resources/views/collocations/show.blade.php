@@ -94,13 +94,13 @@
                             </button>
                         </form>
                         
-                        <form method="POST" action="{{ route('colocations.destroy', $colocation) }}" class="flex-1">
+                        <!-- <form method="POST" action="{{ route('colocations.destroy', $colocation) }}" class="flex-1">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-1.5 border border-red-300 shadow-sm text-xs font-medium rounded text-red-700 bg-white hover:bg-red-50 transition" onclick="return confirm('Êtes-vous sûr de vouloir SIMPRIMER DÉFINITIVEMENT cette colocation ?')">
                                 Supprimer
                             </button>
-                        </form>
+                        </form> -->
                     </div>
                 </div>
                 
@@ -247,7 +247,7 @@
                                         <input type="hidden" name="to_user_id" value="{{ $s['to']->id }}">
                                         <input type="hidden" name="amount" value="{{ $s['amount'] }}">
                                         <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 shadow-sm transition">
-                                            Rembourser
+                                            Marqué Payé
                                         </button>
                                     </form>
                                 @endif

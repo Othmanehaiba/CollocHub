@@ -79,6 +79,44 @@
             </h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            @if($isOwner)
+                <div class="bg-white rounded-lg p-5 shadow-sm border border-amber-100">
+                    <h3 class="font-semibold text-gray-900 mb-1">Créer une catégorie</h3>
+                    <p class="text-xs text-gray-500 mb-3">Ajoutez une nouvelle catégorie pour les dépenses.</p>
+            
+                    <form method="POST" action="{{ route('colocations.categories.store', $colocation) }}" class="flex items-start gap-3">
+                        @csrf
+            
+                        <div class="flex-1">
+                            <label for="category_name" class="sr-only">Nom de la catégorie</label>
+                            <input
+                                type="text"
+                                id="category_name"
+                                name="name"
+                                placeholder="Ex: Courses, Loyer, Internet..."
+                                required
+                                class="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            >
+            
+                            @error('name')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+            
+                            @error('category')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+            
+                        <button
+                            type="submit"
+                            class="inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
+                        >
+                            Ajouter
+                        </button>
+                    </form>
+                </div>
+            @endif
                 <!-- Manage Coloc -->
                 <div class="bg-white rounded-lg p-5 shadow-sm border border-amber-100 flex flex-col justify-between">
                     <div>
@@ -265,7 +303,7 @@
                         <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                         Dépenses
                     </h2>
-                    
+
                     <div class="flex items-center gap-3">
                         <form method="GET" action="{{ route('colocations.show', $colocation) }}" class="flex items-center gap-2">
                             <label for="month" class="sr-only">Mois</label>

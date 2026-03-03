@@ -141,7 +141,7 @@
                                             @csrf
                                             <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md text-red-700 bg-white border border-red-200 hover:bg-red-50 hover:border-red-300 transition shadow-sm" onclick="return confirm('Êtes-vous sûr de vouloir bannir cet utilisateur ?')">
                                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
-                                                Bannir
+                                                Bannirrrrr
                                             </button>
                                         </form>
                                     @else

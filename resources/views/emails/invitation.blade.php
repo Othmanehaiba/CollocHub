@@ -48,8 +48,8 @@
                                             <table cellpadding="0" cellspacing="0" role="presentation">
                                                 <tr>
                                                     <td>
-                                                        <a href="{{ route('register', ['invite' => $token]) }}" style="box-sizing: border-box; display: inline-block; padding: 12px 28px; background-color: #4f46e5; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px; text-align: center; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
-                                                            Créer un compte et rejoindre
+                                                        <a href="{{ route('invitations.open', $token) }}" style="box-sizing: border-box; display: inline-block; padding: 12px 28px; background-color: #4f46e5; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px; text-align: center; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
+                                                            Ouvrir l'invitation
                                                         </a>
                                                     </td>
                                                 </tr>

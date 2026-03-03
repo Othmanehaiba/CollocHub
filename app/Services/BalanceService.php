@@ -36,7 +36,6 @@ class BalanceService
             foreach ($rows as &$row) {
                 $row['share'] += $share;
             }
-            unset($row);
 
             if (isset($rows[$expense->paid_by])) {
                 $rows[$expense->paid_by]['paid'] += (float) $expense->amount;
@@ -56,8 +55,7 @@ class BalanceService
         foreach ($rows as &$row) {
             $row['balance'] = round($row['paid'] - $row['share'], 2);
         }
-        unset($row);
-
+        
         return $rows;
     }
 

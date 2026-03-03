@@ -47,12 +47,12 @@ class ExpensesController extends Controller
             'category_id' => ['required', 'integer', 'in:' . implode(',', $categoryIds)],
             'amount' => ['required', 'numeric', 'min:0.01'],
             'expense_date' => ['required', 'date'],
-            'paid_by' => ['required', 'integer', 'in:' . implode(',', $memberIds)],
+            
         ]);
 
         Expense::create([
             'colocation_id' => $colocation->id,
-            'paid_by' => $validated['paid_by'],
+            'paid_by' => auth()->id(),
             'category_id' => $validated['category_id'],
             'title' => $validated['title'],
             'amount' => $validated['amount'],
@@ -64,59 +64,6 @@ class ExpensesController extends Controller
             ->with('success', 'Dépense ajoutée.');
     }
 
-    public function edit(Colocation $colocation, Expense $expense): View
-    {
-        $this->ensureCanManageExpense($colocation, $expense);
-
-        $members = $colocation->memberships()
-            ->whereNull('left_at')
-            ->with('user')
-            ->get();
-
-        $categories = $colocation->categories()->orderBy('name')->get();
-
-        return view('expenses.edit', compact('colocation', 'expense', 'members', 'categories'));
-    }
-
-    public function update(Request $request, Colocation $colocation, Expense $expense): RedirectResponse
-    {
-        $this->ensureCanManageExpense($colocation, $expense);
-
-        $memberIds = $colocation->memberships()
-            ->whereNull('left_at')
-            ->pluck('user_id')
-            ->toArray();
-
-        $categoryIds = $colocation->categories()
-            ->pluck('id')
-            ->toArray();
-
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'category_id' => ['required', 'integer', 'in:' . implode(',', $categoryIds)],
-            'amount' => ['required', 'numeric', 'min:0.01'],
-            'expense_date' => ['required', 'date'],
-            'paid_by' => ['required', 'integer', 'in:' . implode(',', $memberIds)],
-        ]);
-
-        $expense->update($validated);
-
-        return redirect()
-            ->route('colocations.show', $colocation)
-            ->with('success', 'Dépense mise à jour.');
-    }
-
-    public function destroy(Colocation $colocation, Expense $expense): RedirectResponse
-    {
-        $this->ensureCanManageExpense($colocation, $expense);
-
-        $expense->delete();
-
-        return redirect()
-            ->route('colocations.show', $colocation)
-            ->with('success', 'Dépense supprimée.');
-    }
-
     private function ensureActiveMember(Colocation $colocation): void
     {
         $isMember = $colocation->memberships()
@@ -125,29 +72,6 @@ class ExpensesController extends Controller
             ->exists();
 
         if (! $isMember && ! auth()->user()->is_admin) {
-            abort(403);
-        }
-    }
-
-    private function ensureCanManageExpense(Colocation $colocation, Expense $expense): void
-    {
-        $this->ensureActiveMember($colocation);
-
-        if ($expense->colocation_id !== $colocation->id) {
-            abort(404);
-        }
-
-        $isOwner = $colocation->memberships()
-            ->where('user_id', auth()->id())
-            ->where('role', 'owner')
-            ->whereNull('left_at')
-            ->exists();
-
-        if (
-            $expense->paid_by !== auth()->id()
-            && ! $isOwner
-            && ! auth()->user()->is_admin
-        ) {
             abort(403);
         }
     }

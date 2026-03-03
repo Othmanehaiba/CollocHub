@@ -25,9 +25,15 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
+    
         $request->session()->regenerate();
-
+    
+        $inviteToken = $request->session()->pull('invite_token');
+    
+        if ($inviteToken) {
+            return redirect()->route('invitations.respond', $inviteToken);
+        }
+    
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

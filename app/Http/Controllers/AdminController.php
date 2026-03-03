@@ -26,12 +26,6 @@ class AdminController extends Controller
 
     public function ban(User $user): RedirectResponse
     {
-        if ($user->id === auth()->id()) {
-            return back()->withErrors([
-                'admin' => 'Vous ne pouvez pas vous bannir vous-même.',
-            ]);
-        }
-
         $user->update([
             'is_banned' => true,
             'banned_at' => now(),

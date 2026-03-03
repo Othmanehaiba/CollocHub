@@ -36,25 +36,6 @@ class CategoriesController extends Controller
         return back()->with('success', 'Catégorie ajoutée.');
     }
 
-    public function destroy(Colocation $colocation, Category $category): RedirectResponse
-    {
-        $this->ensureOwnerOrAdmin($colocation);
-
-        if ($category->colocation_id !== $colocation->id) {
-            abort(404);
-        }
-
-        if ($category->expenses()->exists()) {
-            return back()->withErrors([
-                'category' => 'Impossible de supprimer une catégorie déjà utilisée.',
-            ]);
-        }
-
-        $category->delete();
-
-        return back()->with('success', 'Catégorie supprimée.');
-    }
-
     private function ensureOwnerOrAdmin(Colocation $colocation): void
     {
         $isOwner = $colocation->memberships()

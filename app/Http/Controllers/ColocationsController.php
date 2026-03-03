@@ -60,11 +60,6 @@ class ColocationsController extends Controller
             'joined_at' => now(),
         ]);
 
-        // catégories par défaut
-        foreach (['Loyer', 'Nourriture', 'Internet', 'Transport', 'Factures'] as $name) {
-            $colocation->categories()->create(['name' => $name]);
-        }
-
         return redirect()
             ->route('colocations.show', $colocation)
             ->with('success', 'Colocation créée avec succès.');
@@ -114,29 +109,6 @@ class ColocationsController extends Controller
             'settlements',
             'myBalance'
         ));
-    }
-
-    public function edit(Colocation $colocation): View
-    {
-        $this->ensureOwnerOrAdmin($colocation);
-
-        return view('collocations.edit', compact('colocation'));
-    }
-
-    public function update(Request $request, Colocation $colocation): RedirectResponse
-    {
-        $this->ensureOwnerOrAdmin($colocation);
-
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-        ]);
-
-        $colocation->update($validated);
-
-        return redirect()
-            ->route('colocations.show', $colocation)
-            ->with('success', 'Colocation mise à jour.');
     }
 
     public function cancel(Colocation $colocation, BalanceService $balanceService): RedirectResponse
@@ -248,22 +220,6 @@ class ColocationsController extends Controller
         return back()->with('success', 'Membre retiré.');
     }
 
-    public function destroy(Colocation $colocation): RedirectResponse
-    {
-        $this->ensureOwnerOrAdmin($colocation);
-
-        if ($colocation->status !== 'cancelled') {
-            return back()->withErrors([
-                'destroy' => 'Annulez d’abord la colocation avant de la supprimer.',
-            ]);
-        }
-
-        $colocation->delete();
-
-        return redirect()
-            ->route('dashboard')
-            ->with('success', 'Colocation supprimée définitivement.');
-    }
 
     private function ensureMemberOrAdmin(Colocation $colocation): void
     {

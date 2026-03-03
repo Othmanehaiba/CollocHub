@@ -55,7 +55,7 @@ class BalanceService
         foreach ($rows as &$row) {
             $row['balance'] = round($row['paid'] - $row['share'], 2);
         }
-        
+
         return $rows;
     }
 
@@ -71,7 +71,7 @@ class BalanceService
                 $creditors[] = [
                     'user' => $row['user'],
                     'amount' => $row['balance'],
-                ];
+                ];  
             }
 
             if ($row['balance'] < -0.01) {
